@@ -1,2 +1,9 @@
-192.168.1.151
-192.168.1.152
+[web_servers]
+192.168.1.151 apache_package=apache2 php_package=libapache2-mod-php
+192.168.1.152 apache_package=apache2 php_package=libapache2-mod-php
+
+[db_servers]
+192.168.1.152 mariadb_package=mariadb-server
+
+[file_servers]
+192.168.1.151 
