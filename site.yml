@@ -39,6 +39,30 @@
         - php
     when: ansible_distribution == "CentOS"
 
+  - name: start httpd (CentOS)
+    tags: apache,centos,httpd
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: change e-mail address for admin
+    tags: apache,centos,httpd
+    lineinfile:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^ServerAdmin'
+      line: ServerAdmin somebody@somegroup.io
+    when: ansible_distribution == "CentOS"
+    register: httpd
+
+  - name: restart httpd (CentOS)
+    tags: apache, centos,httpd
+    service:
+      name: httpd
+      state: restarted
+    when: httpd.changed
+
   - name: copy default html file for site
     tags: apache,apache2,httpd
     copy:
@@ -47,6 +71,14 @@
       owner: root
       group: root
       mode: 0644
+
+  - name: start apache2 (ubuntu)
+    tags: apache2,ubuntu
+    service:
+      name: apache2
+      state: started
+      enabled: yes
+    when: ansible_distribution == "Ubuntu"
 
 - hosts: db_servers
   become: true
@@ -76,7 +108,6 @@
       name: samba
       state: latest
 
-
 - hosts: workstations
   become: true
   tasks:
@@ -88,7 +119,7 @@
   - name: install terraform
     unarchive:
       src: https://releases.hashicorp.com/terraform/0.13.3/terraform_0.13.3_linux_amd64.zip
-      dest: /ust/local/bin
+      dest: /usr/local/bin
       remote_src: yes
       mode: 0755
       owner: root
