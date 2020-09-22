@@ -6,4 +6,8 @@
 192.168.1.152 mariadb_package=mariadb-server
 
 [file_servers]
-192.168.1.151 
+192.168.1.151
+
+
+[workstation]
+192.168.1.96
